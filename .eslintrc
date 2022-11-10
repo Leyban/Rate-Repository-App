@@ -1,5 +1,5 @@
 {
-    "plugins": ["react", "react-native"],
+    "plugins": ["react", "react-native", "jsx"],
     "settings": {
       "react": {
         "version": "detect"
@@ -15,6 +15,6 @@
     },
     "rules": {
       "react/prop-types": "off",
-      "react/react-in-jsx-scope": "on"
+      "react/react-in-jsx-scope": "off"
     }
   }
