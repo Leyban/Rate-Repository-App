@@ -7,6 +7,7 @@ import theme from '../utils/themes'
 const styles = StyleSheet.create({
   container:{
     padding: 15,
+    backgroundColor: 'white'
   },
   header: {
     display: 'flex',
