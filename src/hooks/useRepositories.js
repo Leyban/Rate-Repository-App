@@ -9,15 +9,12 @@ const useRepositories = () => {
   })
 
   const [repositories, setRepositories] = useState();
-  console.log(data)
 
   const fetchRepositories = async () => {    
-    console.log('changed repository')
     setRepositories(data.repositories)
   };
 
   useEffect(() => {
-    console.log('ran useEffect')
     if(!loading) {
       fetchRepositories();
     }
