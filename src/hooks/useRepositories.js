@@ -10,14 +10,14 @@ const useRepositories = () => {
 
   const [repositories, setRepositories] = useState();
 
-  const fetchRepositories = async () => {    
+  const fetchRepositories = async () => {
     setRepositories(data.repositories)
   };
 
   useEffect(() => {
-    if(!loading) {
+    if(!loading && data) {
       fetchRepositories();
-    }
+    } 
   }, [loading]);
 
   return { repositories, loading, refetch: fetchRepositories };

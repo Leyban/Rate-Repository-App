@@ -7,8 +7,8 @@ export default {
   "orientation": "portrait",
   "icon": "./assets/icon.png",
   "userInterfaceStyle": "light",
-  extra: {
-    env: process.env.APOLLO_URI
+  "extra": {
+    "apolloUri": process.env.APOLLO_URI
   },
   "splash": {
     "image": "./assets/splash.png",

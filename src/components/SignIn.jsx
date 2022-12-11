@@ -6,7 +6,7 @@ import FormikTextInput from './FormikTextInput';
 import theme from '../utils/themes';
 import * as yup from 'yup'
 import useSignIn from '../hooks/useSignIn';
-import AuthStorage from '../utils/authStorage';
+import { useNavigate } from 'react-router-native';
 
 
 const initialValues = {
@@ -39,14 +39,14 @@ const SignInForm = ({onSubmit}) => {
 
 const SignIn = () => {
   const [signIn] = useSignIn()
+  const navigate = useNavigate()
 
   const onSubmit = async (values) => {
     const { username, password } = values
 
     try {
-      const result = await signIn({username, password})
-      const authStorage = new AuthStorage('authStorage')
-      await authStorage.setAccessToken(result.data.authenticate.accessToken)
+      await signIn({username, password})
+      navigate('/')
     } catch (error) {
       console.error(error)
     }
