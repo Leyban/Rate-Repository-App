@@ -52,9 +52,9 @@ const styles = StyleSheet.create({
 const ScoreCard = ({title, score}) => {
   let shownScore = String(score);
   if (score > 1000){
-    shownScore = String(Math.round(score * 0.01) / 10).concat('k')
+    shownScore = String(Math.floor(score * 0.01) / 10).concat('k')
   } else if (score > 1000000){
-    shownScore = String(Math.round(score * 0.00001) / 10).concat('m')
+    shownScore = String(Math.floor(score * 0.00001) / 10).concat('m')
   }
   return <View style={styles.scoreCard}>
     <Text fontWeight='bold'>{shownScore}</Text>
@@ -74,7 +74,7 @@ export default function RepositoryItem({
     ownerAvatarUrl
 }) {
   return (
-    <View style={styles.container}>
+    <View testID='repositoryItem' style={styles.container}>
       <View style={styles.header}>
         <Image 
           style={styles.avatar}
