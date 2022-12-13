@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import { FlatList, View, StyleSheet } from 'react-native';
+import { FlatList, View, StyleSheet, Pressable } from 'react-native';
+import { Link, useNavigate } from 'react-router-native';
 import useRepositories from '../hooks/useRepositories';
 import RepositoryItem from './RepositoryItem';
 
@@ -14,21 +15,23 @@ const ItemSeparator = () => <View style={styles.separator} />;
 
 
 export const RepositoryListContainer = ({repositories}) => {
+  const navigate = useNavigate()
+
+  const onPress = (id) => {
+    console.log('item pressed', id)
+    navigate(`/single/${id}`)
+  }
+
   const repositoryNodes = repositories 
     ? repositories.edges.map(edge => edge.node)
     : []
 
   const renderItem = ({ item }) => {
-    return <RepositoryItem 
-      fullName={item.fullName}
-      description={item.description}
-      language={item.language}
-      forksCount={item.forksCount}
-      stargazersCount = {item.stargazersCount}
-      ratingAverage = {item.ratingAverage}
-      reviewCount = {item.reviewCount}
-      ownerAvatarUrl = {item.ownerAvatarUrl}
-     />
+    return (
+    <Pressable onPress={() => onPress(item.id)}>
+      <RepositoryItem {...item}/>
+    </Pressable>
+    )
   }
 
   return (

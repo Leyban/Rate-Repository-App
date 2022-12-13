@@ -1,8 +1,10 @@
-import { View, StyleSheet, Image } from 'react-native'
+import { View, StyleSheet, Image, Pressable } from 'react-native'
+import * as Linking from 'expo-linking'
 import Text from './Text'
 import React from 'react'
 
 import theme from '../utils/themes'
+import { useParams } from 'react-router-native'
 
 const styles = StyleSheet.create({
   container:{
@@ -46,6 +48,14 @@ const styles = StyleSheet.create({
   scoreCard: {
     display: 'flex',
     alignItems: 'center'
+  },
+  githubLink: {
+    backgroundColor: theme.colors.primary,
+    borderRadius: 3,
+    color: 'white',
+    padding: 20,
+    textAlign: 'center',
+    marginTop: 20
   }
 })
 
@@ -64,15 +74,22 @@ const ScoreCard = ({title, score}) => {
 
 
 export default function RepositoryItem({
-    fullName,
-    description,
-    language,
-    forksCount,
-    stargazersCount,
-    ratingAverage,
-    reviewCount,
-    ownerAvatarUrl
+  fullName,
+  description,
+  language,
+  forksCount,
+  stargazersCount,
+  ratingAverage,
+  reviewCount,
+  ownerAvatarUrl,
+  url
 }) {
+  const { repoId } = useParams()
+  
+  const onPress = () => {
+    Linking.openURL(url)
+  }
+
   return (
     <View testID='repositoryItem' style={styles.container}>
       <View style={styles.header}>
@@ -81,7 +98,7 @@ export default function RepositoryItem({
           source={{
             uri: ownerAvatarUrl
           }}
-          />
+        />
         <View style={styles.headerText} >
           <Text fontWeight='bold' fontSize='subheading'>{fullName}</Text>
           <Text >{description}</Text>
@@ -98,8 +115,10 @@ export default function RepositoryItem({
         <ScoreCard title={'Reviews'} score={reviewCount}/>
         <ScoreCard title={'Rating'} score={ratingAverage}/>
       </View>
-
-
+        
+      {repoId && <View onPress={onPress}>
+        <Pressable onPress={onPress}><Text fontWeight='bold' fontSize='subheading' style={styles.githubLink}>Open In Github</Text></Pressable>
+      </View>}
     </View>
   )
 }
