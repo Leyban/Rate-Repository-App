@@ -117,7 +117,9 @@ export default function RepositoryItem({
       </View>
         
       {repoId && <View onPress={onPress}>
-        <Pressable onPress={onPress}><Text fontWeight='bold' fontSize='subheading' style={styles.githubLink}>Open In Github</Text></Pressable>
+        <Pressable onPress={onPress}>
+          <Text fontWeight='bold' fontSize='subheading' style={styles.githubLink}>Open In Github</Text>
+        </Pressable>
       </View>}
     </View>
   )

@@ -35,3 +35,34 @@ export const GET_REPOSITORIES = gql`
     }
   }
 `
+
+export const SINGLE_REPOSITORY = gql`
+query ($repositoryId: ID!) {
+  repository(id: $repositoryId) {
+    id
+    fullName
+    description
+    ownerAvatarUrl
+    language
+    stargazersCount
+    forksCount
+    reviewCount
+    ratingAverage
+    url
+    reviews {
+      edges {
+        node {
+          id
+          text
+          rating
+          createdAt
+          user {
+            id
+            username
+          }
+        }
+      }
+    }
+  }
+}
+`
