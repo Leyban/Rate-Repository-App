@@ -18,7 +18,6 @@ export const RepositoryListContainer = ({repositories}) => {
   const navigate = useNavigate()
 
   const onPress = (id) => {
-    console.log('item pressed', id)
     navigate(`/single/${id}`)
   }
 

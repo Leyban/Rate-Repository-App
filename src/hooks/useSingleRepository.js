@@ -12,8 +12,6 @@ const useSingleRepository = (repositoryId) => {
   const { data, error, loading } = response
 
   const [repository, setRepository] = useState();
-  console.log('eggnogg', data, loading)
-  console.log(response);
 
   const fetchRepository = async () => {
     setRepository(data.repository)

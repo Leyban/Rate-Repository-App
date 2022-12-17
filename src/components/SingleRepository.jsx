@@ -31,15 +31,13 @@ const ReviewItem = ({ review }) => {
 const SingleRepository = () => {
     const { repoId } = useParams()
     const { repository:singleRepo } = useSingleRepository(repoId)
-  
-    console.log(repoId,singleRepo)
-
+    
     return (<>
         {singleRepo 
             ? <FlatList
                 data={singleRepo.reviews.edges}
                 renderItem={({ item }) => <ReviewItem review={item.node} />}
-                keyExtractor={({ id }) => id}
+                keyExtractor={( item ) => item.node.id }
                 ListHeaderComponent={() => <RepositoryInfo repository={singleRepo} />}
             />
             : <Text>Loading...</Text>

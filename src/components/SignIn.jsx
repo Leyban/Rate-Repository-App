@@ -42,7 +42,7 @@ export const SignInContainer = ({onSubmit}) => {
       onSubmit={onSubmit} 
       validationSchema={validationSchema}
     >
-    {({ handleSubmit }) => <SignInForm onSubmit={handleSubmit} />}
+      {({ handleSubmit }) => <SignInForm onSubmit={handleSubmit} />}
   </Formik>
 }
 
@@ -72,10 +72,6 @@ const styles = StyleSheet.create({
   container: {
     padding: 20,
     backgroundColor: 'white'
-  },  
-
-  errorInput: {
-    borderColor: theme.colors.error
   },
   button: {
     backgroundColor: theme.colors.primary,
