@@ -1,6 +1,7 @@
 import { useQuery } from '@apollo/client';
 import { useState, useEffect } from 'react';
 import { GET_REPOSITORIES } from '../graphql/queries';
+import { useDebounce } from 'use-debounce';
 
 const useRepositories = () => {
   const [orderSettings, setOrderSettings] = useState({
@@ -8,11 +9,13 @@ const useRepositories = () => {
     orderDirection: "DESC"
   });
   const [selectedOrder, setSelectedOrder] = useState('Latest repositories')
+  const [searchKeyword, setSearchKeyword] = useState('')
+  const [debouncedKeyword] = useDebounce(searchKeyword, 500)
 
   const { data, error, loading } = useQuery(GET_REPOSITORIES,{
     // to avoid future caching problems
     fetchPolicy: 'cache-and-network',
-    variables: orderSettings
+    variables: {...orderSettings, searchKeyword:debouncedKeyword}
   })
 
   const changeOrder = (order) => {
@@ -37,7 +40,6 @@ const useRepositories = () => {
     }
   }
 
-
   const [repositories, setRepositories] = useState();
 
   const fetchRepositories = async () => {
@@ -50,7 +52,15 @@ const useRepositories = () => {
     } 
   }, [loading]);
 
-  return { repositories, loading, refetch: fetchRepositories, changeOrder, selectedOrder };
+  return { 
+    repositories, 
+    loading, 
+    refetch: fetchRepositories, 
+    changeOrder, 
+    selectedOrder, 
+    searchKeyword,
+    setSearchKeyword 
+  };
 };
 
 export default useRepositories;
