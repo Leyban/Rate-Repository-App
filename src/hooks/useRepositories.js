@@ -12,10 +12,15 @@ const useRepositories = () => {
   const [searchKeyword, setSearchKeyword] = useState('')
   const [debouncedKeyword] = useDebounce(searchKeyword, 500)
 
-  const { data, error, loading } = useQuery(GET_REPOSITORIES,{
+  const { data, error, loading, fetchMore } = useQuery(GET_REPOSITORIES,{
     // to avoid future caching problems
     fetchPolicy: 'cache-and-network',
-    variables: {...orderSettings, searchKeyword:debouncedKeyword}
+    variables: {
+      ...orderSettings, 
+      searchKeyword:debouncedKeyword, 
+      first: 4,
+      after: ''
+    }
   })
 
   const changeOrder = (order) => {
@@ -46,16 +51,31 @@ const useRepositories = () => {
     setRepositories(data.repositories)
   };
 
+  const handleFetchMore = async () => {
+    const canFetchMore = !loading && data?.repositories.pageInfo.hasNextPage;
+
+    if (!canFetchMore) {
+      return;
+    }
+
+    const egg = fetchMore({
+      variables: {
+        after: data.repositories.pageInfo.endCursor,
+      },
+    });
+  };
+
   useEffect(() => {
     if(!loading && data) {
       fetchRepositories();
     } 
-  }, [loading]);
+  }, [loading, data]);
 
   return { 
     repositories, 
     loading, 
     refetch: fetchRepositories, 
+    fetchMore: handleFetchMore,
     changeOrder, 
     selectedOrder, 
     searchKeyword,

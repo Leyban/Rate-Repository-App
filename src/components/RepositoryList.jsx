@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react'
-import { FlatList, View, StyleSheet, Pressable, Image, Dimensions } from 'react-native';
+import { FlatList, View, StyleSheet, Pressable, Image, Dimensions, ScrollView, SafeAreaView } from 'react-native';
 import { useNavigate } from 'react-router-native';
 import useRepositories from '../hooks/useRepositories';
 import RepositoryItem from './RepositoryItem';
@@ -88,9 +88,11 @@ const styles = StyleSheet.create({
   clearImg: {
     width: 25,
     height: 25
+  },
+  listContainer: {
+    flex: 1,
   }
 });
-
 
 
 // Simple List Item Separator
@@ -197,17 +199,18 @@ export class RepositoryListContainer extends React.Component {
     const repositoryNodes = props.repositories ? props.repositories.edges.map(edge => edge.node) : []
 
     return (
-      <View>
+      <SafeAreaView style={styles.listContainer}>
           <FlatList
             data={repositoryNodes}
             ItemSeparatorComponent={ItemSeparator}
             renderItem ={this.renderItem}
             keyExtractor={item => item.id}
             ListHeaderComponent={this.renderHeader}
+            onEndReached={props.onEndReach}
+            onEndReachedThreshold={0.5}
           />
           {props.visible && <OrderPickerModal closeModal={props.closeModal} modalSelected={props.modalSelected} />}
-      </View>
-
+      </SafeAreaView>
     );
   }
 }
@@ -220,7 +223,8 @@ const RepositoryList = () => {
     changeOrder, 
     selectedOrder,
     searchKeyword,
-    setSearchKeyword 
+    setSearchKeyword,
+    fetchMore 
   } = useRepositories()
 
 
@@ -240,6 +244,11 @@ const RepositoryList = () => {
     navigate(`/single/${id}`)
   }
 
+  // For infinite scrolling
+  const onEndReach = () => {
+    fetchMore()
+  };
+
   return <RepositoryListContainer 
     repositories={repositories} 
     changeOrder={changeOrder} 
@@ -251,6 +260,7 @@ const RepositoryList = () => {
     closeModal={closeModal}
     modalSelected={modalSelected}
     onRepositoryPress={onRepositoryPress}
+    onEndReach={onEndReach}
   />
 };
 
