@@ -30,7 +30,11 @@ const ReviewItem = ({ review }) => {
 
 const SingleRepository = () => {
     const { repoId } = useParams()
-    const { repository:singleRepo } = useSingleRepository(repoId)
+    const { repository:singleRepo, fetchMore } = useSingleRepository(repoId)
+
+    const onEndReach = () => {
+        fetchMore()
+    }
     
     return (<>
         {singleRepo 
@@ -39,6 +43,8 @@ const SingleRepository = () => {
                 renderItem={({ item }) => <ReviewItem review={item.node} />}
                 keyExtractor={( item ) => item.node.id }
                 ListHeaderComponent={() => <RepositoryInfo repository={singleRepo} />}
+                onEndReached={onEndReach}
+                onEndReachedThreshold={0.5}
             />
             : <Text>Loading...</Text>
         }

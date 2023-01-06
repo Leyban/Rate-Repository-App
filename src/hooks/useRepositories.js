@@ -51,14 +51,14 @@ const useRepositories = () => {
     setRepositories(data.repositories)
   };
 
-  const handleFetchMore = async () => {
+  const handleFetchMore = () => {
     const canFetchMore = !loading && data?.repositories.pageInfo.hasNextPage;
 
     if (!canFetchMore) {
       return;
     }
 
-    const egg = fetchMore({
+    fetchMore({
       variables: {
         after: data.repositories.pageInfo.endCursor,
       },

@@ -6,10 +6,10 @@ const useSingleRepository = (repositoryId) => {
   const response = useQuery(SINGLE_REPOSITORY,{
     // to avoid future caching problems
     fetchPolicy: 'cache-and-network',
-    variables: { repositoryId }
+    variables: { repositoryId, first: 2, after: '' }
   })
 
-  const { data, error, loading } = response
+  const { data, error, loading, fetchMore } = response
 
   const [repository, setRepository] = useState();
 
@@ -17,13 +17,30 @@ const useSingleRepository = (repositoryId) => {
     setRepository(data.repository)
   };
 
+  const handleFetchMore = () => {
+    const canFetchMore = !loading && data?.repository.reviews.pageInfo.hasNextPage;
+
+    if (!canFetchMore) {
+      return;
+    }
+
+    fetchMore({
+      variables: {
+        after: data.repository.reviews.pageInfo.endCursor,
+      },
+    });
+  };
+
+
+
   useEffect(() => {
     if(!loading && data) {
+      console.log(data.repository.reviews)
       fetchRepository();
     }
-  }, [loading]);
+  }, [loading, data]);
 
-  return { repository, loading, refetch: fetchRepository };
+  return { repository, loading, refetch: fetchRepository, fetchMore: handleFetchMore };
 };
 
 export default useSingleRepository;
