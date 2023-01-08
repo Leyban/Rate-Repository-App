@@ -1,10 +1,30 @@
 import { gql } from '@apollo/client'
 
 export const ME = gql`
-  {
+  query ($includeReviews: Boolean = false, $first: Int, $after: String) {
     me {
       id
       username
+      reviews (first: $first, after: $after) @include (if: $includeReviews)  {
+        edges {
+          cursor
+          node {
+            createdAt
+            id
+            rating
+            repository {
+              fullName
+              id
+            }
+            text
+          }
+        }
+        pageInfo {
+          endCursor
+          hasNextPage
+          startCursor
+        }
+      }
     }
   }
 `

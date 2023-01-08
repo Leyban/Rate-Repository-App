@@ -1,7 +1,7 @@
-import { View, StyleSheet, Text, ScrollView, Button, Pressable } from 'react-native';
+import { StyleSheet, Text, ScrollView, Pressable, SafeAreaView } from 'react-native';
 import Constants from 'expo-constants';
 import React from 'react'
-import { Link } from 'react-router-native';
+import { Link, useNavigate } from 'react-router-native';
 import { useQuery } from '@apollo/client';
 import { ME } from '../graphql/queries';
 import useSignOut from '../hooks/useSignOut';
@@ -24,21 +24,24 @@ const styles = StyleSheet.create({
 const AppBar = () => {
   const { data } = useQuery(ME)
   const [signOut] = useSignOut()
+  const navigate = useNavigate()
 
   const onPress = async () => {
     try {
       await signOut()
+      navigate('/')
     } catch (error) {
       console.log(error);
     }
   }
 
-  return <View style={styles.container}>
+  return <SafeAreaView style={styles.container}>
       <ScrollView horizontal >
         <Link to={'/'}><Text style={styles.text}>Repositories</Text></Link>
         { data && data.me 
           ? <>
               <Link to={'/createReview'}><Text style={styles.text}>Create a Review</Text></Link>
+              <Link to={'/myReviews'}><Text style={styles.text}>My reviews</Text></Link>
               <Pressable onPress={onPress}><Text style={styles.text}>Sign Out</Text></Pressable>
             </>
           : <>
@@ -47,7 +50,7 @@ const AppBar = () => {
             </>
         }
       </ScrollView>
-    </View>;
+    </SafeAreaView>;
 };
 
 export default AppBar;

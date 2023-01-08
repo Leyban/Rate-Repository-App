@@ -35,7 +35,6 @@ const useSingleRepository = (repositoryId) => {
 
   useEffect(() => {
     if(!loading && data) {
-      console.log(data.repository.reviews)
       fetchRepository();
     }
   }, [loading, data]);
